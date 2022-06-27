@@ -8,11 +8,14 @@ import org.springframework.stereotype.Service;
 
 import Demo.RestfulAPI.Converter.ProductConverter;
 import Demo.RestfulAPI.DTO.ProductDTO;
+import Demo.RestfulAPI.ExceptionHandler.NotFoundException;
+import Demo.RestfulAPI.ExceptionHandler.ProductExceptionHandler;
 import Demo.RestfulAPI.Model.ProductModel;
 import Demo.RestfulAPI.Repository.ProductRepository;
 
 @Service
 public class IProductService implements ProductService {
+
 
 	@Autowired
 	ProductRepository productRepository;
@@ -23,6 +26,9 @@ public class IProductService implements ProductService {
 	@Override
 	public List<ProductDTO> getProduct() {
 		List<ProductModel> productModels = productRepository.findAll();
+		if (productModels == null) {
+			 throw new NotFoundException("No prodct found");
+		}
 		List<ProductDTO> productDTOs = new ArrayList<>();
 
 		for (ProductModel productModel : productModels) {
@@ -45,11 +51,15 @@ public class IProductService implements ProductService {
 	public void deleteProduct(int ID[]) {
 		for (int id : ID)
 			productRepository.deleteById(id);
+		
 	}
 
 	@Override
 	public ProductDTO updateProduct(ProductDTO productDTO) {
 		ProductModel productModel = findById(productDTO.getId());
+		if (productModel == null) {
+			throw new NotFoundException("No product found");
+		}
 		ProductModel ProductUpdate = productConverter.toEntity(productDTO, productModel);
 		ProductUpdate = productRepository.save(ProductUpdate);
 		return productConverter.toDTO(ProductUpdate);
@@ -58,6 +68,22 @@ public class IProductService implements ProductService {
 	@Override
 	public ProductModel findById(Integer id) {
 		ProductModel productModel = productRepository.findOneById(id);
-		return productModel;
+		if (productModel==null) {
+			throw new NotFoundException("No product found");
+		}
+			return productModel;
+	}
+
+	@Override
+	public List<ProductDTO> findByName(String nameproduct) {
+		List<ProductModel>  productModels = productRepository.findByNameProduct(nameproduct);
+		List<ProductDTO> productDTOs = new ArrayList<>();
+		for (ProductModel productModel : productModels) {
+			ProductDTO productDTO = new ProductDTO();
+			productDTO = productConverter.toDTO(productModel);
+			productDTOs.add(productDTO);
+		}
+		return productDTOs;
+		 
 	}
 }

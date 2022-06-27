@@ -20,22 +20,30 @@ import Demo.RestfulAPI.Service.IProductService;
 public class ProductController {
 	@Autowired
 	IProductService productService;
-	
+
 	@GetMapping("Product")
 	public List<ProductDTO> listProduct() {
 		return productService.getProduct();
 	}
+
 	@PostMapping("Product")
 	public ProductDTO addProduct(@Valid @RequestBody ProductDTO productDTO) {
 		return productService.addProduct(productDTO);
 	}
+
 	@DeleteMapping("Product")
 	public void deleteProduct(@RequestBody int ID[]) {
-			productService.deleteProduct(ID);
+		productService.deleteProduct(ID);
 	}
+
 	@PutMapping("Product/{id}")
-	public ProductDTO updateProduct(@PathVariable("id") Integer id,@Valid @RequestBody ProductDTO productDTO) {
+	public ProductDTO updateProduct(@PathVariable("id") Integer id, @Valid @RequestBody ProductDTO productDTO) {
 		productDTO.setId(id);
 		return productService.updateProduct(productDTO);
+	}
+
+	@GetMapping("Search")
+	public List<ProductDTO>  SearchProduct(@Valid @RequestBody  String nameproduct) {
+		return productService.findByName(nameproduct);
 	}
 }

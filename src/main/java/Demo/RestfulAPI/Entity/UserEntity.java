@@ -1,4 +1,4 @@
-package Demo.RestfulAPI.Model;
+package Demo.RestfulAPI.Entity;
 
 import java.io.Serializable;
 import java.util.Set;
@@ -24,7 +24,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @Entity
 @Table(name = "users")
-public class UserModel implements Serializable {
+public class UserEntity implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 	@Id
@@ -46,6 +46,6 @@ public class UserModel implements Serializable {
 	private String AboutMe;
 	@ManyToMany
 	@JoinTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
-	private Set<RoleModel> roles;
+	private Set<RoleEntity> roles;
 
 }

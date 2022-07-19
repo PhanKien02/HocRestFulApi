@@ -8,14 +8,12 @@ import org.springframework.stereotype.Service;
 
 import Demo.RestfulAPI.Converter.ProductConverter;
 import Demo.RestfulAPI.DTO.ProductDTO;
-import Demo.RestfulAPI.ExceptionHandler.NotFoundException;
-import Demo.RestfulAPI.ExceptionHandler.ProductExceptionHandler;
-import Demo.RestfulAPI.Model.ProductModel;
+import Demo.RestfulAPI.Entity.ProductEntity;
 import Demo.RestfulAPI.Repository.ProductRepository;
+import Exception.NotFoundException;
 
 @Service
 public class IProductService implements ProductService {
-
 
 	@Autowired
 	ProductRepository productRepository;
@@ -23,15 +21,17 @@ public class IProductService implements ProductService {
 	@Autowired
 	ProductConverter productConverter;
 
+	private ProductEntity productModel;
+
 	@Override
 	public List<ProductDTO> getProduct() {
-		List<ProductModel> productModels = productRepository.findAll();
+		List<ProductEntity> productModels = productRepository.findAll();
 		if (productModels == null) {
-			 throw new NotFoundException("No prodct found");
+			throw new NotFoundException("No prodct found");
 		}
 		List<ProductDTO> productDTOs = new ArrayList<>();
 
-		for (ProductModel productModel : productModels) {
+		for (ProductEntity productModel : productModels) {
 			ProductDTO productDTO = new ProductDTO();
 			productDTO = productConverter.toDTO(productModel);
 			productDTOs.add(productDTO);
@@ -41,7 +41,7 @@ public class IProductService implements ProductService {
 
 	@Override
 	public ProductDTO addProduct(ProductDTO productDTO) {
-		ProductModel productModel = productConverter.toEntity(productDTO);
+		ProductEntity productModel = productConverter.toEntity(productDTO);
 		productModel = productRepository.save(productModel);
 		return productConverter.toDTO(productModel);
 
@@ -51,39 +51,35 @@ public class IProductService implements ProductService {
 	public void deleteProduct(int ID[]) {
 		for (int id : ID)
 			productRepository.deleteById(id);
-		
+		throw new NotFoundException("No product found");
 	}
 
 	@Override
 	public ProductDTO updateProduct(ProductDTO productDTO) {
-		ProductModel productModel = findById(productDTO.getId());
-		if (productModel == null) {
+		ProductEntity productModel = findById(productDTO.getId());
+		if (productModel != null) {
+			ProductEntity ProductUpdate = productConverter.toEntity(productDTO, productModel);
+			ProductUpdate = productRepository.save(ProductUpdate);
+			return productConverter.toDTO(ProductUpdate);
+		} else
 			throw new NotFoundException("No product found");
-		}
-		ProductModel ProductUpdate = productConverter.toEntity(productDTO, productModel);
-		ProductUpdate = productRepository.save(ProductUpdate);
-		return productConverter.toDTO(ProductUpdate);
 	}
 
 	@Override
-	public ProductModel findById(Integer id) {
-		ProductModel productModel = productRepository.findOneById(id);
-		if (productModel==null) {
-			throw new NotFoundException("No product found");
-		}
-			return productModel;
+	public ProductEntity findById(Integer id) {
+		productModel = productRepository.findOneById(id);
+		return productModel;
 	}
 
 	@Override
 	public List<ProductDTO> findByName(String nameproduct) {
-		List<ProductModel>  productModels = productRepository.findByNameProduct(nameproduct);
+		List<ProductEntity> productModels = productRepository.findByNameProduct(nameproduct);
 		List<ProductDTO> productDTOs = new ArrayList<>();
-		for (ProductModel productModel : productModels) {
+		for (ProductEntity productModel : productModels) {
 			ProductDTO productDTO = new ProductDTO();
 			productDTO = productConverter.toDTO(productModel);
 			productDTOs.add(productDTO);
 		}
 		return productDTOs;
-		 
 	}
 }

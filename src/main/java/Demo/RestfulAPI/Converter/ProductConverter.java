@@ -3,12 +3,12 @@ package Demo.RestfulAPI.Converter;
 import org.springframework.stereotype.Component;
 
 import Demo.RestfulAPI.DTO.ProductDTO;
-import Demo.RestfulAPI.Model.ProductModel;
+import Demo.RestfulAPI.Entity.ProductEntity;
 
 @Component
 public class ProductConverter {
-	public ProductModel toEntity(ProductDTO productDTO) {
-		ProductModel productModel = new ProductModel();
+	public ProductEntity toEntity(ProductDTO productDTO) {
+		ProductEntity productModel = new ProductEntity();
 		productModel.setId(productDTO.getId());
 		productModel.setNameProduct(productDTO.getNameProduct());
 		productModel.setAmount(productDTO.getAmount());
@@ -18,7 +18,7 @@ public class ProductConverter {
 		return productModel;
 	}
 
-	public ProductDTO toDTO(ProductModel productModel) {
+	public ProductDTO toDTO(ProductEntity productModel) {
 		ProductDTO productDTO = new ProductDTO();
 		productDTO.setId(productModel.getId());
 		productDTO.setNameProduct(productModel.getNameProduct());
@@ -29,7 +29,7 @@ public class ProductConverter {
 		return productDTO;
 	}
 	
-	public ProductModel toEntity(ProductDTO productDTO,ProductModel productModel) {
+	public ProductEntity toEntity(ProductDTO productDTO,ProductEntity productModel) {
 		productModel.setId(productDTO.getId());
 		productModel.setNameProduct(productDTO.getNameProduct());
 		productModel.setAmount(productDTO.getAmount());

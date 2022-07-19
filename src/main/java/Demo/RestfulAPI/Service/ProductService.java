@@ -3,7 +3,7 @@ package Demo.RestfulAPI.Service;
 import java.util.List;
 
 import Demo.RestfulAPI.DTO.ProductDTO;
-import Demo.RestfulAPI.Model.ProductModel;
+import Demo.RestfulAPI.Entity.ProductEntity;
 
 public interface ProductService {
 
@@ -17,5 +17,5 @@ public interface ProductService {
 
 	public List<ProductDTO> findByName(String nameProduct);
 
-	public ProductModel findById(Integer id) ;
+	public ProductEntity findById(Integer id) ;
 }

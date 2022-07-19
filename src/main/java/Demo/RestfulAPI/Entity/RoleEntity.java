@@ -1,4 +1,4 @@
-package Demo.RestfulAPI.Model;
+package Demo.RestfulAPI.Entity;
 
 import java.util.Set;
 
@@ -10,12 +10,16 @@ import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 @Entity
 @Table(name = "roles")
-public class RoleModel {
+public class RoleEntity {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "role_id")
@@ -25,14 +29,5 @@ public class RoleModel {
 	private String roleName;
 
 	@ManyToMany(mappedBy = "roles")
-	private Set<UserModel> users;
-
-	public String getRoleName() {
-		return roleName;
-	}
-
-	public RoleModel(String roleName) {
-		this.roleName = roleName;
-	}
-
+	private Set<UserEntity> users;
 }

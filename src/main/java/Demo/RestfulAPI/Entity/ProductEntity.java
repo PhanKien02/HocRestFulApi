@@ -1,4 +1,4 @@
-package Demo.RestfulAPI.Model;
+package Demo.RestfulAPI.Entity;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -21,7 +21,7 @@ import lombok.Setter;
 @AllArgsConstructor
 @Entity
 @Table(name = "product")
-public class ProductModel{
+public class ProductEntity{
 	 	@Id
 		@GeneratedValue(strategy = GenerationType.IDENTITY)
 		private int id;

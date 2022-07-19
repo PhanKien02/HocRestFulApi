@@ -1,4 +1,4 @@
-package Demo.RestfulAPI.ExceptionHandler;
+package Exception;
 
 import org.springframework.http.HttpStatus;
 

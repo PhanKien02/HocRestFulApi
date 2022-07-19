@@ -1,4 +1,4 @@
-package Demo.RestfulAPI.Controller;
+package Demo.RestfulAPI.Api;
 
 import java.util.List;
 
@@ -17,7 +17,7 @@ import Demo.RestfulAPI.DTO.ProductDTO;
 import Demo.RestfulAPI.Service.IProductService;
 
 @RestController
-public class ProductController {
+public class ProductApi {
 	@Autowired
 	IProductService productService;
 
